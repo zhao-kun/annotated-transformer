@@ -18,7 +18,9 @@ COPY . /workspace
 RUN make notebook
 
 ENV SHELL=/bin/bash
-
 ADD rootfs/entrypoint.sh /usr/local/bin
+
+RUN tar  -C /root/ -xvf multi30k.tar.gz
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
