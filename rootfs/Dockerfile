@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.0.1-base-ubuntu22.04-python3.10 
+FROM zhaokundev/cuda:12.0.1-base-ubuntu22.04-python3.10 
 
 ADD requirements.txt  .
 
