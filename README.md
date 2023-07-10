@@ -1,68 +1,42 @@
+
 Code for The Annotated Transformer blog post:
 
 http://nlp.seas.harvard.edu/annotated-transformer/
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/harvardnlp/annotated-transformer/blob/master/AnnotatedTransformer.ipynb)
 
-![image](https://user-images.githubusercontent.com/35882/166251887-9da909a9-660b-45a9-ae72-0aae89fb38d4.png)
+# Introduction
+The repository was forked from [harvardnlp/annotated-transformer](https://github.com/harvardnlp/annotated-transformer). The original README.md is [here](README.original.md).
 
+I enhanced the notebook to support the following features:
 
+- Support to run notebook in the Docker container.
 
+- Add Chinese code interpretation for code snapshot in the notebook.
 
-# Package Dependencies
+# How build docker image
+Run the following command to build docker image:
 
-Use `requirements.txt` to install library dependencies with pip:
-
+```bash
+docker build -t annotated-transformer  -f rootfs/Dockerfile .
 ```
-pip install -r requirements.txt
-```
-
-
-# Notebook Setup
-
-The Annotated Transformer is created using [jupytext](https://github.com/mwouts/jupytext).
-
-Regular notebooks pose problems for source control - cell outputs end up in the repo history and diffs between commits are difficult to examine. Using jupytext, there is a python script (`.py` file) that is automatically kept in sync with the notebook file by the jupytext plugin.
-
-The python script is committed contains all the cell content and can be used to generate the notebook file. The python script is a regular python source file, markdown sections are included using a standard comment convention, and outputs are not saved. The notebook itself is treated as a build artifact and is not commited to the git repository.
-
-Prior to using this repo, make sure jupytext is installed by following the [installation instructions here](https://github.com/mwouts/jupytext/blob/main/docs/install.md).
-
-To produce the `.ipynb` notebook file using the markdown source, run (under the hood, the `notebook` build target simply runs `jupytext --to ipynb the_annotated_transformer.py`):
-
-```
-make notebook
+or 
+```bash
+./build_image.sh
 ```
 
-To produce the html version of the notebook, run:
 
+# How to run notebook in docker container
+
+Run the following command to start a docker container:
+
+```bash
+./start.sh
 ```
-make html
-```
+or
 
-`make html` is just a shortcut for for generating the notebook with `jupytext --to ipynb the_annotated_transformer.py` followed by using the jupyter nbconvert command to produce html using `jupyter nbconvert --to html the_annotated_transformer.ipynb`                             
- 
-
-# Formatting and Linting
-
-To keep the code formatting clean, the annotated transformer git repo has a git action to check that the code conforms to [PEP8 coding standards](https://www.python.org/dev/peps/pep-0008/).
-
-To make this easier, there are two `Makefile` build targets to run automatic code formatting with black and flake8.
-
-Be sure to [install black](https://github.com/psf/black#installation) and [flake8](https://flake8.pycqa.org/en/latest/).
-
-You can then run:
-
-```
-make black
+```bash
+docker run -d --gpu 1 --rm -p 8888:8888 annotated-transformer
 ```
 
-(or alternatively manually call black `black --line-length 79 the_annotated_transformer.py`) to format code automatically using black and:
+Then, open the browser and input the following url: `http://127.0.0.1:8888/lab`
 
-```
-make flake
-```
-
-(or manually call flake8 `flake8 --show-source the_annotated_transformer.py) to check for PEP8 violations.
-
-It's recommended to run these two commands and fix any flake8 errors that arise, when submitting a PR, otherwise the github actions CI will report an error.
